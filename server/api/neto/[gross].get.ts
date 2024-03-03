@@ -1,4 +1,12 @@
-import { GrossToNetConfig, THIRD_PILLAR_NON_TAXABLE_LIMIT, detailedSalary, grossToNet, isValidPlace } from 'brutoneto'
+import {
+  GrossToNetConfig,
+  MAX_PERSONAL_ALLOWANCE_COEFFICIENT,
+  MIN_PERSONAL_ALLOWANCE_COEFFICIENT,
+  THIRD_PILLAR_NON_TAXABLE_LIMIT,
+  detailedSalary,
+  grossToNet,
+  isValidPlace,
+} from 'brutoneto'
 import { z } from 'zod'
 
 const ParamsSchema = z.object({
@@ -6,18 +14,14 @@ const ParamsSchema = z.object({
 })
 
 const QuerySchema = z.object({
-  place: z.string().transform((place) => {
-    const placeFound = isValidPlace(place)
-    if (!placeFound) {
-      throw new Error(`Field <place>: Invalid place provided. Received ${place}`)
-    }
-    return place
+  place: z.string().refine(isValidPlace, {
+    message: 'Invalid place'
   }).optional(),
-  ltax: z.number({ coerce: true }).positive().min(0).max(0.99).optional(),
-  htax: z.number({ coerce: true }).positive().min(0).max(0.99).optional(),
-  coeff: z.number({ coerce: true }).positive().min(0.3).max(6.0).optional(),
+  ltax: z.number({ coerce: true }).min(0).max(0.99).optional(),
+  htax: z.number({ coerce: true }).min(0).max(0.99).optional(),
+  coeff: z.number({ coerce: true }).min(MIN_PERSONAL_ALLOWANCE_COEFFICIENT).max(MAX_PERSONAL_ALLOWANCE_COEFFICIENT).optional(),
   third_pillar: z.number({ coerce: true }).min(0).max(THIRD_PILLAR_NON_TAXABLE_LIMIT, {
-    message: `Maximum allowed non-taxable monthly third pillar contribution is ${THIRD_PILLAR_NON_TAXABLE_LIMIT}`
+    message: `Maximum allowed non-taxable monthly third pillar contribution is ${THIRD_PILLAR_NON_TAXABLE_LIMIT}`,
   }).optional(),
   detailed: z.boolean({ coerce: true }).optional(),
 })
@@ -28,7 +32,7 @@ export default defineEventHandler(async (event) => {
   if (params.success === false) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid gross amount.',
+      statusMessage: 'Invalid gross amount',
       message: extractZodErrorMessage(params.error),
     })
   }
@@ -40,19 +44,12 @@ export default defineEventHandler(async (event) => {
   if (query.success === false) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid query parameters.',
+      statusMessage: 'Invalid query parameter(s)',
       message: extractZodErrorMessage(query.error),
     })
   }
 
-  const {
-    place,
-    ltax,
-    htax,
-    coeff,
-    third_pillar,
-    detailed,
-  } = query.data
+  const { place, ltax, htax, coeff, third_pillar, detailed } = query.data
 
   const grossToNetConfig: GrossToNetConfig = {
     place,

@@ -59,10 +59,12 @@ export const looseToNumber = <T = undefined>(
 }
 
 export const extractZodErrorMessage = (err: z.ZodError) => {
+	const providedVal = err.issues
 	return err.errors.map((error: z.ZodIssue) => {
 		if (!error.path?.length) {
 			return error.message
 		}
+		// const receivedValue = error.
 		return `Field <${error.path.join('.')}>: ${error.message}`
 	}).join('; ')
 }
