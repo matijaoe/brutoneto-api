@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 export const isNumber = (val: unknown): val is number => {
 	try {
 		return Number(val) === val
@@ -54,4 +56,13 @@ export const looseToNumber = <T = undefined>(
 	}
 	const n = isString(val) ? Number.parseFloat(val) : Number.NaN
 	return Number.isNaN(n) ? (fallback as T) : n
+}
+
+export const extractZodErrorMessage = (err: z.ZodError) => {
+	return err.errors.map((error: z.ZodIssue) => {
+		if (!error.path?.length) {
+			return error.message
+		}
+		return `Field <${error.path.join('.')}>: ${error.message}`
+	}).join('; ')
 }

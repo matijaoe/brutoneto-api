@@ -7,9 +7,10 @@
     "preview": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "nitropack": "latest"
+    "nitropack": "latest",
+    "zod": "^3.22.4"
   },
   "dependencies": {
-    "brutoneto": "^0.0.2"
+    "brutoneto": "^0.0.8"
   }
 }
