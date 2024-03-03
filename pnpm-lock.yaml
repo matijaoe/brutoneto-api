@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   brutoneto:
-    specifier: ^0.0.8
-    version: 0.0.8(typescript@5.3.3)
+    specifier: ^0.0.9
+    version: 0.0.9(typescript@5.3.3)
 
 devDependencies:
   nitropack:
@@ -904,8 +904,8 @@ packages:
       fill-range: 7.0.1
     dev: true
 
-  /brutoneto@0.0.8(typescript@5.3.3):
-    resolution: {integrity: sha512-FyEXpTtyGdxsaBdP29KMeI4prBHP0rrZhvD1LGMFXOuLopIGhB715esE1VSK3n8IfJucT6UHscvUiS6o/7aAhg==}
+  /brutoneto@0.0.9(typescript@5.3.3):
+    resolution: {integrity: sha512-kgRfn/29aoAB+QvcZl1v5mXJU5bsplF6gE7Psqe50zljuvN21ic0O1ry2oOLjsQkEKKNUD7zMzOP0DeZ7UT+Pg==}
     peerDependencies:
       typescript: ^5.0.0
     dependencies:

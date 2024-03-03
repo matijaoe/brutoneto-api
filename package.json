@@ -11,6 +11,6 @@
     "zod": "^3.22.4"
   },
   "dependencies": {
-    "brutoneto": "^0.0.8"
+    "brutoneto": "^0.0.9"
   }
 }
