@@ -1,15 +1,15 @@
-import { z } from 'zod'
+import type { z } from 'zod'
 
 export const isNumber = (val: unknown): val is number => {
-	try {
-		return Number(val) === val
-	} catch {
-		return false
-	}
+  try {
+    return Number(val) === val
+  } catch {
+    return false
+  }
 }
 
 export const isString = (val: unknown): val is string => {
-	return typeof val === 'string'
+  return typeof val === 'string'
 }
 
 /**
@@ -25,14 +25,14 @@ export const isString = (val: unknown): val is string => {
  * toNumber('foo', 'bar') // 'bar'
  */
 export const toNumber = <T = undefined>(
-	val: unknown,
-	fallback?: T
+  val: unknown,
+  fallback?: T,
 ): number | T => {
-	if (isNumber(val)) {
-		return val
-	}
-	const n = isString(val) ? Number(val) : Number.NaN
-	return Number.isNaN(n) ? (fallback as T) : n
+  if (isNumber(val)) {
+    return val
+  }
+  const n = isString(val) ? Number(val) : Number.NaN
+  return Number.isNaN(n) ? fallback as T : n
 }
 
 /**
@@ -48,23 +48,23 @@ export const toNumber = <T = undefined>(
  * toNumber('foo', 'bar') // 'bar'
  */
 export const looseToNumber = <T = undefined>(
-	val: unknown,
-	fallback?: T
+  val: unknown,
+  fallback?: T,
 ): number | T => {
-	if (isNumber(val)) {
-		return val
-	}
-	const n = isString(val) ? Number.parseFloat(val) : Number.NaN
-	return Number.isNaN(n) ? (fallback as T) : n
+  if (isNumber(val)) {
+    return val
+  }
+  const n = isString(val) ? Number.parseFloat(val) : Number.NaN
+
+  return Number.isNaN(n) ? fallback as T : n
 }
 
 export const extractZodErrorMessage = (err: z.ZodError) => {
-	const providedVal = err.issues
-	return err.errors.map((error: z.ZodIssue) => {
-		if (!error.path?.length) {
-			return error.message
-		}
-		// const receivedValue = error.
-		return `Field <${error.path.join('.')}>: ${error.message}`
-	}).join('; ')
+  return err.errors.map((error: z.ZodIssue) => {
+    if (!error.path?.length) {
+      return error.message
+    }
+    // const receivedValue = error.
+    return `Field <${error.path.join('.')}>: ${error.message}`
+  }).join('; ')
 }

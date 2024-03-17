@@ -4,13 +4,17 @@
     "build": "nitro build",
     "dev": "nitro dev",
     "prepare": "nitro prepare",
-    "preview": "node .output/server/index.mjs"
-  },
-  "devDependencies": {
-    "nitropack": "latest",
-    "zod": "^3.22.4"
+    "preview": "node .output/server/index.mjs",
+    "lint": "eslint .",
+    "format": "eslint . --fix"
   },
   "dependencies": {
-    "brutoneto": "^0.0.9"
+    "brutoneto": "^0.1.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.8.3",
+    "eslint": "^8.57.0",
+    "nitropack": "latest",
+    "zod": "^3.22.4"
   }
 }
