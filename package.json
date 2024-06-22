@@ -10,7 +10,10 @@
     "format": "eslint . --fix"
   },
   "dependencies": {
-    "brutoneto": "^0.2.1"
+    "@graphql-yoga/node": "^3.9.1",
+    "brutoneto": "^0.2.1",
+    "graphql": "^16.9.0",
+    "graphql-yoga": "^5.4.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.21.1",
