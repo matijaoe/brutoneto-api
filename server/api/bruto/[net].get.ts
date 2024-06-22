@@ -1,18 +1,8 @@
-import type {
-  GrossToNetConfig,
-} from 'brutoneto'
-import {
-  MAX_PERSONAL_ALLOWANCE_COEFFICIENT,
-  MIN_PERSONAL_ALLOWANCE_COEFFICIENT,
-  THIRD_PILLAR_NON_TAXABLE_LIMIT,
-  detailedSalary,
-  grossToNet,
-  isValidPlace,
-} from 'brutoneto'
 import { z } from 'zod'
+import { MAX_PERSONAL_ALLOWANCE_COEFFICIENT, MIN_PERSONAL_ALLOWANCE_COEFFICIENT, isValidPlace, netToGross } from 'brutoneto'
 
 const ParamsSchema = z.object({
-  gross: z.number({ coerce: true }).positive(),
+  net: z.number({ coerce: true }).positive(),
 })
 
 const QuerySchema = z.object({
@@ -29,13 +19,6 @@ const QuerySchema = z.object({
     .min(MIN_PERSONAL_ALLOWANCE_COEFFICIENT)
     .max(MAX_PERSONAL_ALLOWANCE_COEFFICIENT)
     .optional(),
-  third_pillar: z
-    .number({ coerce: true })
-    .min(0)
-    .max(THIRD_PILLAR_NON_TAXABLE_LIMIT, {
-      message: `Maximum allowed non-taxable monthly third pillar contribution is €${THIRD_PILLAR_NON_TAXABLE_LIMIT}`,
-    })
-    .optional(),
   detailed: z.boolean({ coerce: true }).optional(),
 })
 
@@ -45,12 +28,12 @@ export default defineEventHandler(async (event) => {
   if (params.success === false) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid gross amount',
+      statusMessage: 'Invalid net amount',
       message: extractZodErrorMessage(params.error),
     })
   }
 
-  const { gross } = params.data
+  const { net } = params.data
 
   const query = await getValidatedQuery(event, QuerySchema.safeParse)
 
@@ -62,29 +45,18 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { place, ltax, htax, coeff, third_pillar, detailed } = query.data
+  const { place, ltax, htax, coeff } = query.data
 
-  const grossToNetConfig: GrossToNetConfig = {
+  const gross = netToGross(net, {
     place,
     taxRateLow: ltax,
     taxRateHigh: htax,
     personalAllowanceCoefficient: coeff,
-    thirdPillarContribution: third_pillar,
-  }
-
-  if (detailed === true) {
-    const res = detailedSalary(gross, grossToNetConfig)
-    return {
-      ...res,
-      currency: 'EUR',
-    }
-  }
-
-  const net = grossToNet(gross, grossToNetConfig)
+  })
 
   return {
-    gross,
     net,
+    gross,
     currency: 'EUR',
   }
 })

@@ -40,5 +40,10 @@
     "yaml",
     "toml",
     "astro"
+  ],
+  "cSpell.words": [
+    "coeff",
+    "htax",
+    "ltax"
   ]
 }
