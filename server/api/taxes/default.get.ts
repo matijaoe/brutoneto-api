@@ -1,9 +1,6 @@
-import { RATE } from 'brutoneto'
+import { getDefaultTax } from 'brutoneto'
 
 export default defineEventHandler(() => {
-  return {
-    place: null,
-    taxRateLow: RATE.TAX_LOW_BRACKET,
-    taxRateHigh: RATE.TAX_HIGH_BRACKET,
-  }
+  // eslint-disable-next-line ts/no-unsafe-return, ts/no-unsafe-call
+  return getDefaultTax()
 })

@@ -1,5 +1,6 @@
-import { PlaceMap } from 'brutoneto'
+import { getPlacesTaxes } from 'brutoneto'
 
 export default defineEventHandler(() => {
-  return PlaceMap
+  // eslint-disable-next-line ts/no-unsafe-return, ts/no-unsafe-call
+  return getPlacesTaxes()
 })
