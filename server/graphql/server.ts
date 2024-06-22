@@ -1,4 +1,4 @@
-import type { GrossToNetConfig } from 'brutoneto'
+import type { Place } from 'brutoneto'
 import { detailedSalary } from 'brutoneto'
 import { createSchema, createYoga } from 'graphql-yoga'
 
@@ -67,8 +67,21 @@ const typeDefs = /* GraphQL */ `
 
 const resolvers = {
   Query: {
-    grossToNet: (_, { gross, config }: { gross: number, config: GrossToNetConfig }) => {
-      return detailedSalary(gross, config)
+    // TODO: clean this up
+    grossToNet: (_, { gross, config }: { gross: number, config: {
+      place: Place
+      ltax: number
+      htax: number
+      coeff: number
+      third_pillar: number
+    } }) => {
+      return detailedSalary(gross, {
+        place: config.place,
+        taxRateLow: config.ltax,
+        taxRateHigh: config.htax,
+        personalAllowanceCoefficient: config.coeff,
+        thirdPillarContribution: config.third_pillar
+      })
     }
   }
 }
