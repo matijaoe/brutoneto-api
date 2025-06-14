@@ -1,5 +1,5 @@
 import type { Place } from '@brutoneto/core'
-import { detailedSalary } from '@brutoneto/core'
+import { grossToNetBreakdown } from '@brutoneto/core'
 import { createSchema, createYoga } from 'graphql-yoga'
 
 const typeDefs = /* GraphQL */ `
@@ -75,7 +75,7 @@ const resolvers = {
       coeff: number
       third_pillar: number
     } }) => {
-      return detailedSalary(gross, {
+      return grossToNetBreakdown(gross, {
         place: config.place,
         taxRateLow: config.ltax,
         taxRateHigh: config.htax,
