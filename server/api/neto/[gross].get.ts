@@ -6,6 +6,7 @@ import {
   grossToNet,
   grossToNetBreakdown,
   isValidPlace,
+  roundEuros,
 } from '@brutoneto/core'
 import { z } from 'zod'
 
@@ -35,6 +36,7 @@ const QuerySchema = z.object({
     })
     .optional(),
   detailed: z.boolean({ coerce: true }).optional(),
+  yearly: z.boolean({ coerce: true }).optional(),
 })
 
 export default defineEventHandler(async (event) => {
@@ -60,7 +62,10 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { place, ltax, htax, coeff, third_pillar, detailed } = query.data
+  const { place, ltax, htax, coeff, third_pillar, detailed, yearly } = query.data
+
+  // Convert yearly gross to monthly if yearly parameter is true
+  const monthlyGross = yearly === true ? roundEuros(gross / 12) : gross
 
   const grossToNetConfig: SalaryConfig = {
     place,
@@ -71,17 +76,17 @@ export default defineEventHandler(async (event) => {
   }
 
   if (detailed === true) {
-    const res = grossToNetBreakdown(gross, grossToNetConfig)
+    const res = grossToNetBreakdown(monthlyGross, grossToNetConfig)
     return {
       ...res,
       currency: 'EUR',
     }
   }
 
-  const net = grossToNet(gross, grossToNetConfig)
+  const net = grossToNet(monthlyGross, grossToNetConfig)
 
   return {
-    gross,
+    gross: monthlyGross,
     net,
     currency: 'EUR',
   }
