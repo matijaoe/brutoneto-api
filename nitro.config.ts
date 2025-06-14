@@ -2,4 +2,7 @@
 export default defineNitroConfig({
   srcDir: 'server',
   errorHandler: '~/error',
+  experimental: {
+    openAPI: true,
+  },
 })
