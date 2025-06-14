@@ -1,14 +1,14 @@
-import type { SalaryConfig } from '@brutoneto/core'
+import type { Place, SalaryConfig } from '@brutoneto/core'
 import {
   MAX_PERSONAL_ALLOWANCE_COEFFICIENT,
   MIN_PERSONAL_ALLOWANCE_COEFFICIENT,
   THIRD_PILLAR_NON_TAXABLE_LIMIT,
   grossToNet,
   grossToNetBreakdown,
-  isValidPlace,
   roundEuros,
 } from '@brutoneto/core'
 import { z } from 'zod'
+import { isValidPlaceWithShortcuts, resolvePlaceShortcut } from '~/utils/places'
 
 const ParamsSchema = z.object({
   gross: z.number({ coerce: true }).positive(),
@@ -17,7 +17,7 @@ const ParamsSchema = z.object({
 const QuerySchema = z.object({
   place: z
     .string()
-    .refine(isValidPlace, {
+    .refine(isValidPlaceWithShortcuts, {
       message: 'Invalid place',
     })
     .optional(),
@@ -64,11 +64,13 @@ export default defineEventHandler(async (event) => {
 
   const { place, ltax, htax, coeff, third_pillar, detailed, yearly } = query.data
 
-  // Convert yearly gross to monthly if yearly parameter is true
   const monthlyGross = yearly === true ? roundEuros(gross / 12) : gross
 
+  // Resolve place shortcuts to full place names
+  const resolvedPlace = place != null ? resolvePlaceShortcut(place) as Place : undefined
+
   const grossToNetConfig: SalaryConfig = {
-    place,
+    place: resolvedPlace,
     taxRateLow: ltax,
     taxRateHigh: htax,
     personalAllowanceCoefficient: coeff,
