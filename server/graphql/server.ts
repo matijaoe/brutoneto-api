@@ -1,5 +1,5 @@
 import type { Place } from '@brutoneto/core'
-import { grossToNetBreakdown } from '@brutoneto/core'
+import { grossToNetBreakdown, roundEuros } from '@brutoneto/core'
 import { createSchema, createYoga } from 'graphql-yoga'
 
 const typeDefs = /* GraphQL */ `
@@ -9,6 +9,7 @@ const typeDefs = /* GraphQL */ `
     htax: Float
     coeff: Float
     third_pillar: Float
+    yearly: Boolean
   }
 
   type SalaryBreakdown {
@@ -74,8 +75,12 @@ const resolvers = {
       htax: number
       coeff: number
       third_pillar: number
+      yearly: boolean
     } }) => {
-      return grossToNetBreakdown(gross, {
+      // Convert yearly gross to monthly if yearly parameter is true
+      const monthlyGross = config.yearly === true ? roundEuros(gross / 12) : gross
+
+      return grossToNetBreakdown(monthlyGross, {
         place: config.place,
         taxRateLow: config.ltax,
         taxRateHigh: config.htax,
