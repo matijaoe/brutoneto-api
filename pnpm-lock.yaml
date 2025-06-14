@@ -8,12 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@brutoneto/core':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@graphql-yoga/node':
         specifier: ^3.9.1
         version: 3.9.1(graphql@16.9.0)
-      brutoneto:
-        specifier: ^0.3.0
-        version: 0.3.0(typescript@5.7.2)
       graphql:
         specifier: ^16.9.0
         version: 16.9.0
@@ -116,6 +116,9 @@ packages:
   '@babel/types@7.26.3':
     resolution: {integrity: sha512-vN5p+1kl59GVKMvTHt55NzzmYVxprfJD+ql7U9NFIfKCBkYE55LYtS+WtPlaYOyzydrKI8Nezd+aZextrd+FMA==}
     engines: {node: '>=6.9.0'}
+
+  '@brutoneto/core@1.0.0':
+    resolution: {integrity: sha512-7Vp9yU/w9EZjUQDc7K3XP6EPTcBZ0Fnoy9zhvDSzndA7QAr1BHD1TrtJfi9PofTqmYM9oMdcwzyd/PalPe7R4A==}
 
   '@clack/core@0.3.4':
     resolution: {integrity: sha512-H4hxZDXgHtWTwV3RAVenqcC4VbJZNegbBjlPvzOzCouXtS2y3sDvlO3IsbrPNWuLWPPlYVYPghQdSF64683Ldw==}
@@ -1194,11 +1197,6 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
-  brutoneto@0.3.0:
-    resolution: {integrity: sha512-P3IiUdR266RKdNSg4thXxxUpc+O1QSz8Om37qMjcBYr2SQ34ICPqJ8K07iL8+Q1RkOjMKz9hgoxml5iUpYaF+Q==}
-    peerDependencies:
-      typescript: ^5.0.0
-
   buffer-crc32@1.0.0:
     resolution: {integrity: sha512-Db1SbgBS/fg/392AblrMJk97KggmvYhr4pB5ZIMTWtaivCPMWLkmb7m21cJvpvgK+J3nsU2CmmixNBZx4vFj/w==}
     engines: {node: '>=8.0.0'}
@@ -1416,8 +1414,8 @@ packages:
       supports-color:
         optional: true
 
-  decimal.js@10.4.3:
-    resolution: {integrity: sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==}
+  decimal.js@10.5.0:
+    resolution: {integrity: sha512-8vDa8Qxvr/+d94hSh5P3IJwI5t8/c0KsMp+g8bNw9cY2icONa5aPfvKeieW1WlG0WQYwwhJ7mjui2xtiePQSXw==}
 
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
@@ -3279,6 +3277,10 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
+  '@brutoneto/core@1.0.0':
+    dependencies:
+      decimal.js: 10.5.0
+
   '@clack/core@0.3.4':
     dependencies:
       picocolors: 1.0.1
@@ -4413,11 +4415,6 @@ snapshots:
       node-releases: 2.0.14
       update-browserslist-db: 1.0.16(browserslist@4.23.1)
 
-  brutoneto@0.3.0(typescript@5.7.2):
-    dependencies:
-      decimal.js: 10.4.3
-      typescript: 5.7.2
-
   buffer-crc32@1.0.0: {}
 
   buffer-from@1.1.2: {}
@@ -4594,7 +4591,7 @@ snapshots:
     dependencies:
       ms: 2.1.2
 
-  decimal.js@10.4.3: {}
+  decimal.js@10.5.0: {}
 
   deep-is@0.1.4: {}
 

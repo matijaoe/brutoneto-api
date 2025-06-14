@@ -1,5 +1,10 @@
 import { z } from 'zod'
-import { MAX_PERSONAL_ALLOWANCE_COEFFICIENT, MIN_PERSONAL_ALLOWANCE_COEFFICIENT, isValidPlace, netToGross } from 'brutoneto'
+import {
+  MAX_PERSONAL_ALLOWANCE_COEFFICIENT,
+  MIN_PERSONAL_ALLOWANCE_COEFFICIENT,
+  isValidPlace,
+  netToGross,
+} from '@brutoneto/core'
 
 const ParamsSchema = z.object({
   net: z.number({ coerce: true }).positive(),

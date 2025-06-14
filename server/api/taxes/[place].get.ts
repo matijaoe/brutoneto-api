@@ -1,4 +1,4 @@
-import { getPlaceTax, isValidPlace } from 'brutoneto'
+import { getPlaceTax, isValidPlace } from '@brutoneto/core'
 import { z } from 'zod'
 
 const ParamsSchema = z.object({

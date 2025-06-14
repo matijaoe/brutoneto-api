@@ -1,5 +1,5 @@
-import type { Place } from 'brutoneto'
-import { detailedSalary } from 'brutoneto'
+import type { Place } from '@brutoneto/core'
+import { detailedSalary } from '@brutoneto/core'
 import { createSchema, createYoga } from 'graphql-yoga'
 
 const typeDefs = /* GraphQL */ `

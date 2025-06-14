@@ -1,14 +1,12 @@
-import type {
-  GrossToNetConfig,
-} from 'brutoneto'
+import type { SalaryConfig } from '@brutoneto/core'
 import {
   MAX_PERSONAL_ALLOWANCE_COEFFICIENT,
   MIN_PERSONAL_ALLOWANCE_COEFFICIENT,
   THIRD_PILLAR_NON_TAXABLE_LIMIT,
-  detailedSalary,
   grossToNet,
+  grossToNetBreakdown,
   isValidPlace,
-} from 'brutoneto'
+} from '@brutoneto/core'
 import { z } from 'zod'
 
 const ParamsSchema = z.object({
@@ -64,7 +62,7 @@ export default defineEventHandler(async (event) => {
 
   const { place, ltax, htax, coeff, third_pillar, detailed } = query.data
 
-  const grossToNetConfig: GrossToNetConfig = {
+  const grossToNetConfig: SalaryConfig = {
     place,
     taxRateLow: ltax,
     taxRateHigh: htax,
@@ -73,7 +71,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (detailed === true) {
-    const res = detailedSalary(gross, grossToNetConfig)
+    const res = grossToNetBreakdown(gross, grossToNetConfig)
     return {
       ...res,
       currency: 'EUR',
